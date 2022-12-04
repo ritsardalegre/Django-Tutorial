@@ -1,0 +1,101 @@
+Directory
+
+Django(Folder and Directory)
+  ~<django_Base_app>
+     >__pyache__
+     >migrations
+     __init__py.
+     admin.py
+     apps.py
+     models.py
+     test.py
+     urls.py
+     views.py
+  ~<django_project>
+     >__pyache__
+     __init__.py
+     asgi.py
+     settings.py
+     urls.py
+     wsgi.py
+    >env <-------------------------------------------------------- (virtual environment>
+    ~templates <-----------------------------------------------(created Templates folder)
+      home.html<-----------------------------------------------(
+      room.html
+    db.sqlite3
+    manage.py
+   
+
+
+
+~~~~~~~~~~~~~~~~~DJANGO Templates~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 	~To add Templates:
+		~~ go to <django_project_name>/settings.py -----> L: 56 "TEMPLATES"
+
+			~~Add code -> 
+
+				'DIRS': [
+					BASE_DIR / 'templates' <------ Base Directory or <Django_App> Directory and add templates folder
+				]
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	~after adding the code for the templates
+			
+			~~ go to <Django_Base_App>/views.py
+				
+			add code::
+				
+				from django.shortcuts import render
+				from django.http import HttpResponse
+
+				# Create your views here.
+
+				def home(request): #example funtion
+    					return render(request, 'home.html') <------------- renders request to templates/home.html
+
+				def room(request): #Example
+    					return  render(request, 'room.html') <------------ renders request to templates/room.html
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Template Inheritance
+	
+				:: {% include '<name>.html' %} ----------> includes template in the page
+
+
+				:: <body>
+				    |	{% block content%}
+				    |	|	**What this gonna do it's going to tell where to add all these child templates 
+				    | 	|	  when we wrap a parent or another template
+                                    |	{% block content%}
+				    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					
+
+
+				
