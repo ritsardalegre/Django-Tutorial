@@ -1,0 +1,193 @@
+
+
+~~~~~~~~~~~~~~DJANGO Cheatsheet and Commands~~~~~~~~~~~
+
+~~Setup Django~~
+1. Install Python latest at "python.org/downloads/".
+
+~~To install Django using virtualmachine
+	Command
+
+	* pip install virtualenv
+
+		~installing virtual environment package
+
+	* virtualenv <environment_name>  || python -m virtualenv
+
+		~creating the virtual environment
+
+	* env\scripts\activate
+
+		~activating the virtual environment
+
+	* env\scripts\deactivate
+
+		~deactivate the virtual environment
+
+	~~if using VSCode virtualenvironment activate has a error
+
+		ERROR~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+		env/Scripts/activate.ps1 : File 
+		C:\Users\asus\Desktop\Programming\Python\Django\djangopractice\env\Scripts\activate.ps1 cannot be loaded  
+		because running scripts is disabled on this system. For more information, see about_Execution_Policies at 
+		https:/go.microsoft.com/fwlink/?LinkID=135170.
+		At line:1 char:1
+		+ env/Scripts/activate.ps1
+		+ ~~~~~~~~~~~~~~~~~~~~~~~~
+    			+ CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    			+ FullyQualifiedErrorId : UnauthorizedAccess
+
+		ERROR~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		~This is because the user your running the script as has a undefined ExecutionPolicy.
+		 You could fix this by running the following in powershell:
+
+			* Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+
+
+	~~~Installing django~~
+	1. activate virtualenvironment
+	2. pip install django
+	
+
+	~~To access django commands
+		* : django-admin || : python -m django
+
+	~~To create django project
+		: django-admin startproject <name>
+
+	~~To run django server in the django project
+		: cd <django_project_folder>
+		: python manage.py runserver
+		
+			:: http://127.0.0.1:8000/ <---- run the django in the browser
+
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	~~To create Django app type in the command line
+		: python manage.py startapp <app_name>
+
+		~~~ To connect django app to django goto -> settings.py -> Find:: INSTALLED APPS(Line:33) add Django app_name
+			
+			~~~~ '<app_name>.apps.BaseConfig',
+
+				* '<app_name>' = application name created
+				* 'apps' = file in <app_name> folder named "apps.py"
+				* 'BaseConfig' = the classname inside the "apps.py"
+
+
+		~~~ URL Routing and Views for more info please see: https://docs.djangoproject.com/en/4.1/topics/http/urls/
+			~~~~ Go into urls.py
+				* This is our core urls file now we can have multiple urls files here. Were going to have a roots urls file and
+				  one for out specific app
+			~~~~ To create a view we're going to create function based view
+				 
+				V1: -------> FILE <django_project>/urls.py
+				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+					from django.contrib import admin
+					from django.urls import path
+					from django.http import HttpResponse <----------------------(new)
+										***return back a simple HTTP response, were not actually
+										   going to render a template yet.
+
+				 	def home(request): <----------------------------------------(new)
+										*** create a function: def <functioname>(request)
+										*** the request object is the http object that tells us
+											what kindd of request method is sent,
+						       				***what data is passed in, what's the user sending to backend
+
+
+						return HttpResponse('Home page') <--(new)
+										*** return back a simple response to render out
+					
+					urlpatterns = [
+    						path('admin/', admin.site.urls),
+						path('', home) <------------------------------------(new, example)
+										*** ("", home) - returns the value in the function that we defined
+										*** triggers the function and return the response
+										*** copy "http://127.0.0.1:8000/" and input in browser
+										    wll print "Home page"
+					]
+				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+				FILE: -------> <django_app_name>/views.py
+				
+					from django.shortcuts import render
+
+					# Create your views here.
+
+					def home(request):<---------------------- (decription)
+										*** create a function: def <functioname>(request)
+										*** the request object is the http object that tells us
+											what kindd of request method is sent,
+						       				***what data is passed in, what's the user sending to backend
+    						return HttpResponse('Home pages') <---------------- (decription)
+										*** return back a simple response to render out
+
+					def room(request):
+    						return HttpResponse('ROOM') <---------------------(return back the simple response the response)
+					
+
+				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+						
+				Create a urls file "urls.py" to handle routing for the <django_app> and <django_project>
+
+				FILE: ----> <django_base_app_name>/urls.py
+
+				from django.urls import path
+				from . import views
+
+
+				urlpatterns = [
+    					path('', views.home, name="home"),
+    					path('room/', views.room, name="room")
+				]
+				
+				~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+				To connect the <django_app>urls and <django_project>urls
+
+				FILE ----> <django_project>/urls.py
+				
+					from django.contrib import admin
+					from django.urls import path, include <------- add 'include' function
+
+
+
+
+
+					urlpatterns = [
+    					path('admin/', admin.site.urls),
+    					path('', include('base.urls')) <------- add the '<empty string>', include('<django_app_name>.urls'
+										connects the <django_app_name>.urls.py to <django_project>urls.py
+					]
+
+
+
+
+
+	
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
