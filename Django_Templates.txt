@@ -28,10 +28,29 @@ Django(Folder and Directory)
 
 
 
-~~~~~~~~~~~~~~~~~DJANGO Templates~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~DJANGO Templates~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\
 
- 	~To add Templates:
-		~~ go to <django_project_name>/settings.py -----> L: 56 "TEMPLATES"
+	~A Django template is a text document or a Python string marked-up using the Django template language.
+	Some constructs are recognized and interpreted by the template engine. The main ones are variables and tags.
+
+	~A template is rendered with a context. Rendering replaces variables with their values, which are looked up in the context,
+	and executes tags. Everything else is output as is.
+
+	~The syntax of the Django template language involves four constructs.
+	
+		*Variables: 	**A variable outputs a value from the context, which is a dict-like object mapping keys to values.
+
+				** Variables are surrounded by {{ and }} like this:
+
+		*Tags:		** Tags provide arbitrary logic in the rendering process.
+
+				** This definition is deliberately vague. For example, a tag can output content, serve as a control structure e.g. an “if” statement or a “for” loop, grab content from a database, or even enable access to other template tags.
+
+				** Tags are surrounded by {% and %} like this:
+
+
+ 		~To add Templates:
+			~~ go to <django_project_name>/settings.py -----> L: 56 "TEMPLATES"
 
 			~~Add code -> 
 
@@ -39,7 +58,7 @@ Django(Folder and Directory)
 					BASE_DIR / 'templates' <------ Base Directory or <Django_App> Directory and add templates folder
 				]
 
-
+	
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
 	~after adding the code for the templates
@@ -62,6 +81,8 @@ Django(Folder and Directory)
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Template Inheritance
+
+
 	
 				:: {% include '<name>.html' %} ----------> includes template in the page
 
@@ -73,6 +94,109 @@ Django(Folder and Directory)
                                     |	{% block content%}
 				    </body>
 
+				:: {% extends 'main.html %} <--------------connect to main.html
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Example
+
+				:: rooms =[ <-----------------------------------------creating a dictionary
+					{'id':1, 'name': 'Lets learn python!'},
+					{'id':2, 'name': 'Design with me'},
+					{'id':3, 'name': 'Frontend Developers'},
+				
+				]
+			
+
+				def home(request):
+					context = {'rooms':rooms}
+					return render(request, 'home.html', context) <-------- renders data to template or access list
+													to the data
+
+
+				<div>
+					<div> 
+						{% for room in rooms %}	<--------------------- creating loops using templates
+
+						<div>
+							<h5> {{room.id}} -- {{room.name}} </h5> <---------- using variables using templates
+						</div>
+
+
+						{% endfor %}
+					</div>
+				</div>
+				
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DYNAMIC URL Routing
+			<Django_Base_app>/templates/base/home.html
+			
+			{% extends 'main.html' %}
+
+
+			{% block content%}
+
+			<h1> Home templatess </h1>
+
+			<div>
+
+    				<div>
+        				{% for room in rooms %}
+            					<div>
+                					<h5> 
+                    						
+
+								{{room.id}} -- <a href = "/room/{{room.id}}">{{room.name}} </a> <----- Passing value of room.id to urls.py
+										or this code
+								{{room.id}} -- <a href = "{% url 'room' room.id %} ">{{room.name}} </a>
+									<---------------------------- using django url tag
+
+										{% url<---<django_tag> 'room <-- <url_name>' room.id <--- <dynamic value> %}
+                					</h5>
+            					</div>
+        				{% endfor %}
+   			 	</div>
+			</div>
+
+			{% endblock content %}
+
+
+
+			<Django_Base_app>/urls.py
+				
+				
+				from django.urls import path
+				from . import views
+
+
+				urlpatterns = [
+    					path('', views.home, name="home"),
+    					path('room/<str:pk>/', views.room, name="room") <----- passing dynamic value <str:pk> to views.py from home.html
+				]
+			
+
+			
+			<Django_base_app>/views.py
+
+				
+				from django.shortcuts import render
+
+
+				# Create your views here.
+				rooms = [
+   					 {'id': 1, 'name': 'Lets learn python!'},
+    					 {'id': 2, 'name': 'Design with me'},
+    					 {'id': 3, 'name': 'Fullstack'}
+				]
+
+				def home(request): 
+    					context = {'rooms': rooms} #creates a dictionary
+    					return render(request, 'base/home.html', context) 
+
+				def room(request, pk): <--------------------------- pass another perimeter from urls.py
+											access to whatever value is inside of the parameter inside the
+											function
+
+    					return render(request, 'base/room.html')
 
 
 
