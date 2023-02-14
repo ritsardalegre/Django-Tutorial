@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{%block css_files%}
+<link rel="stylesheet" href="{% static "challenges/challenges.css"%}">
+{% endblock %}
+
+
+{%block title_page%}
+    All Challenges
+
+{%endblock%}
+
+{%block content%}
+    
+    {%include "./includes/header.html" %}
+    <h1> All Challenge </h1>
+    <ul>
+        {% for month in month_list %}
+        {% comment %} option 1 {% endcomment %}
+        {% comment %} <li><a href="/challenges/{{month}}"> {{month|title}}</a></li> {% endcomment %}
+        
+        {% comment %} Option2 {% endcomment %}
+        {% comment %} <li><a href="{{month_path}}"> {{month|title}}</a></li> {% endcomment %}
+
+        {% comment %} option3 {% endcomment %}
+        <li><a href="{% url 'month_challenge' month %}"> {{month|title}}</a></li>
+        {% endfor %}
+    </ul>
+{%endblock%}

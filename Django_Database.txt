@@ -1,0 +1,15 @@
+~~
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+
+    * To migrate this use command:
+            :: python manage.py migrate
+
+~~
+
+~~ To create database tables
+
+    go to <Django_App_name>/models.py
+
+	class Project(models.Model):
